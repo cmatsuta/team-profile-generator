@@ -10,6 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const employees = [];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -22,13 +23,95 @@ const getherInformation = (role) => {
             required: true,
         },
         {
+            type: "input",
+            name: "id",
+            message: "Enter your employee id",
+            required: true,
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Enter your email",
+            required: true,
+        },
+        {
             type: "list",
             name: "role",
             message: "What is your role?",
-            choices: ["Manager", "Engineer", "Intern"]
+            choices: ["Manager", "Engineer", "Intern"],
+            required: true,
         },
+
     ])
-}
+    .then(answers => {
+        if(answers.role === "Manager"){
+            return inquirer.prompt([
+                {
+                    type: "input",
+                    name: "officeNumber",
+                    message: "Enter your office number",
+                    required: true,
+                },
+        
+            ])
+            .then(result => {
+                const manager = new Manager(answers.name, answers.id, answers.email, result.officeNumber);
+                employees.push(manager);
+                const html = render(employees);
+                fs.writeFile(outputPath, html, function (err) {
+                    if (err) throw err;
+                    console.log('Saved!');
+                });
+            })
+        }
+
+        if(answers.role === "Engineer"){
+            return inquirer.prompt([
+                {
+                    type: "input",
+                    name: "github",
+                    message: "Enter your github name",
+                    required: true,
+                },
+        
+            ])
+            .then(result => {
+                const engineer = new Engineer(answers.name, answers.id, answers.email, result.github);
+               employees.push(engineer);
+               const html = render(employees);
+               fs.writeFile(outputPath, html, function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+            });
+            })
+        }
+
+        if(answers.role === "Intern"){
+            return inquirer.prompt([
+                {
+                    type: "input",
+                    name: "school",
+                    message: "Enter your school name",
+                    required: true,
+                },
+        
+            ])
+            .then(result => {
+                const intern = new Intern(answers.name, answers.id, answers.email, result.school);
+                employees.push(intern);
+                const html = render(employees);
+                fs.writeFile(outputPath, html, function (err) {
+                    if (err) throw err;
+                    console.log('Saved!');
+                });
+            })
+        }
+
+    });
+};
+getherInformation();
+
+
 
 
 
