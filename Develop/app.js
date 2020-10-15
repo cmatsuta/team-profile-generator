@@ -43,78 +43,100 @@ const getherInformation = (role) => {
         },
 
     ])
-    .then(answers => {
-        if(answers.role === "Manager"){
-            return inquirer.prompt([
-                {
-                    type: "input",
-                    name: "officeNumber",
-                    message: "Enter your office number",
-                    required: true,
-                },
-        
-            ])
-            .then(result => {
-                const manager = new Manager(answers.name, answers.id, answers.email, result.officeNumber);
-                employees.push(manager);
-                const html = render(employees);
-                fs.writeFile(outputPath, html, function (err) {
-                    if (err) throw err;
-                    console.log('Saved!');
-                });
-            })
-        }
+        .then(answers => {
+            //When role is Manager
+            if (answers.role === "Manager") {
+                return inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "officeNumber",
+                        message: "Enter your office number",
+                        required: true,
+                    },
 
-        if(answers.role === "Engineer"){
-            return inquirer.prompt([
-                {
-                    type: "input",
-                    name: "github",
-                    message: "Enter your github name",
-                    required: true,
-                },
-        
-            ])
-            .then(result => {
-                const engineer = new Engineer(answers.name, answers.id, answers.email, result.github);
-               employees.push(engineer);
-               const html = render(employees);
-               fs.writeFile(outputPath, html, function (err) {
+                ])
+                    .then(result => {
+                        const manager = new Manager(answers.name, answers.id, answers.email, result.officeNumber);
+                        employees.push(manager);
+                        return addEmployee ();
+                    })
+            }
+
+            // When role is Engineer
+            if (answers.role === "Engineer") {
+                return inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "github",
+                        message: "Enter your github name",
+                        required: true,
+                    },
+
+                ])
+                    .then(result => {
+                        const engineer = new Engineer(answers.name, answers.id, answers.email, result.github);
+                        employees.push(engineer);
+                        return addEmployee ();
+                        // const html = render(employees);
+                        // fs.writeFile(outputPath, html, function (err) {
+                        //     if (err) throw err;
+                        //     console.log('Saved!');
+                        // });
+                    })
+            }
+
+            // When role is Intern
+            if (answers.role === "Intern") {
+                return inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "school",
+                        message: "Enter your school name",
+                        required: true,
+                    },
+
+                ])
+                    .then(result => {
+                        const intern = new Intern(answers.name, answers.id, answers.email, result.school);
+                        employees.push(intern);
+                        return addEmployee ();
+                        // const html = render(employees);
+                        // fs.writeFile(outputPath, html, function (err) {
+                        //     if (err) throw err;
+                        //     console.log('Saved!');
+                        // });
+                    })
+            }
+
+        });
+};
+
+const addEmployee = () => {
+    return inquirer.prompt ({
+        type: "list",
+        name: "add",
+        message: "Select another team member to add, or select 'Done'",
+        choices: ["engineer", "intern", "DONE"],
+        required: true,
+        default: "Done"
+    })
+    .then(result => {
+        if(result.add === "engineer"){
+            getherInformation("engineer");
+        }else if (result.add === "intern"){
+            getherInformation("intern");
+        }
+        else {
+            const html = render(employees);
+            fs.writeFile(outputPath, html, function (err) {
                 if (err) throw err;
                 console.log('Saved!');
             });
-            })
         }
-
-        if(answers.role === "Intern"){
-            return inquirer.prompt([
-                {
-                    type: "input",
-                    name: "school",
-                    message: "Enter your school name",
-                    required: true,
-                },
-        
-            ])
-            .then(result => {
-                const intern = new Intern(answers.name, answers.id, answers.email, result.school);
-                employees.push(intern);
-                const html = render(employees);
-                fs.writeFile(outputPath, html, function (err) {
-                    if (err) throw err;
-                    console.log('Saved!');
-                });
-            })
-        }
-
-    });
-};
+    })
+}
+// call to get employee information
 getherInformation();
-
-
-
-
-
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
