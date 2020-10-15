@@ -19,7 +19,7 @@ const getherInformation = (role) => {
         {
             type: "input",
             name: "name",
-            message: "Enter your name",
+            message: "Enter the employee name",
             required: true,
         },
         {
@@ -31,7 +31,7 @@ const getherInformation = (role) => {
         {
             type: "input",
             name: "email",
-            message: "Enter your email",
+            message: "Enter the employee's email",
             required: true,
         },
         {
@@ -68,7 +68,7 @@ const getherInformation = (role) => {
                     {
                         type: "input",
                         name: "github",
-                        message: "Enter your github name",
+                        message: "Enter the engineer's github name",
                         required: true,
                     },
 
@@ -91,7 +91,7 @@ const getherInformation = (role) => {
                     {
                         type: "input",
                         name: "school",
-                        message: "Enter your school name",
+                        message: "Enter the intern's school name",
                         required: true,
                     },
 
@@ -116,15 +116,15 @@ const addEmployee = () => {
         type: "list",
         name: "add",
         message: "Select another team member to add, or select 'Done'",
-        choices: ["engineer", "intern", "DONE"],
+        choices: ["Engineer", "Intern", "DONE"],
         required: true,
         default: "Done"
     })
     .then(result => {
-        if(result.add === "engineer"){
-            getherInformation("engineer");
-        }else if (result.add === "intern"){
-            getherInformation("intern");
+        if(result.add === "Engineer"){
+            getherInformation();
+        }else if (result.add === "Intern"){
+            getherInformation();
         }
         else {
             const html = render(employees);
