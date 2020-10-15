@@ -68,7 +68,7 @@ const getherInformation = (role) => {
                     {
                         type: "input",
                         name: "github",
-                        message: "Enter the engineer's github name",
+                        message: "Enter the engineer's github profile",
                         required: true,
                     },
 
@@ -77,11 +77,6 @@ const getherInformation = (role) => {
                         const engineer = new Engineer(answers.name, answers.id, answers.email, result.github);
                         employees.push(engineer);
                         return addEmployee ();
-                        // const html = render(employees);
-                        // fs.writeFile(outputPath, html, function (err) {
-                        //     if (err) throw err;
-                        //     console.log('Saved!');
-                        // });
                     })
             }
 
@@ -100,11 +95,6 @@ const getherInformation = (role) => {
                         const intern = new Intern(answers.name, answers.id, answers.email, result.school);
                         employees.push(intern);
                         return addEmployee ();
-                        // const html = render(employees);
-                        // fs.writeFile(outputPath, html, function (err) {
-                        //     if (err) throw err;
-                        //     console.log('Saved!');
-                        // });
                     })
             }
 
